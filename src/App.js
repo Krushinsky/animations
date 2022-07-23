@@ -65,7 +65,8 @@ function App() {
       </div>
       <div>
               <h2>{title}</h2>
-              <img src={image} width = '300px'/>
+              <img src={image } width = '300px'/>
+              <p>{description}</p>
             </div>
     </div>
   );
