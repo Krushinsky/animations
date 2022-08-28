@@ -3,73 +3,61 @@ import './App.css';
 import { data } from './data'
 
 function App() {
-  const [film, setFilm] = useState (0)
-  const{id, title, description, image} = data[film]
-  const previousTitle = () =>{
-    setFilm(film =>{
-      film--;
-      if (film < 0){
-        return data.length -1
+  const [films, setFilms]= useState(data);
+  const [showDescription, setShowDescription] = useState(false)
+  const removeFilms = (id) =>{
+    let newFilms = films.filter(film => film.id !== id)
+    setFilms(newFilms)
+  }
+  const [movies, setPerson] = useState(0);
+  const{image} = data[movies]
+  const previousFilm = () =>{
+    setPerson(movies =>{
+      movies--;
+      if (movies < 0){
+        return data.length-1;
       }
-      return film
+      return movies;
+    })  
+  }
+  const nextFilm = ()=> {
+    setPerson(movies =>{
+      movies++;
+      if (movies > data.length-1){
+        movies = 0
+      }
+      return movies;
     })
   }
-  const nextTitle = () =>{
-    setFilm(film =>{
-      film++;
-      if (film > data.length-1){
-        film = 0
-      }
-      return film;
-    })
-  }
-
-  return (
+  return(
     <div>
       <div>
-        <h1>Mультфильмы</h1>
-      </div>
-      
-          <div className='slide'>
-            <div>
-              <button onClick={previousTitle}>❮</button>
-            </div>
-
-            <div>
-              <h2>{title}</h2>
-              <img src={image} width = '300px'/>
-            </div>
-    
-            <div>
-              <button onClick={nextTitle}>❯</button>
-            </div>
-          </div>
-    
-      <div>
-      <input/>
-      </div>
-        
-        
-      
-      <div>
-        <button>CCCP</button>
-        <button>Российские</button>
-        <button>Disney</button>
-        <button>Illumination</button>
-        <button>Pixar</button>
+        <img src ={image} width = '300px' alt = 'person'/>
       </div>
       <div>
-        <h3>
-          
-        </h3>
-      </div>
-      <div>
-              <h2>{title}</h2>
-              <img src={image } width = '300px'/>
-              <p>{description}</p>
-            </div>
+      <button onClick={previousFilm}>Previous</button>
+      <button onClick={nextFilm}>Next</button>
     </div>
-  );
+      <div>
+        <h1>List of {films.length} movies</h1>
+      </div>
+      {films.map(movie => {
+        const {id, title, description, image} = movie;
+        return(
+          <div>
+            <h2> {id} -{title}</h2>
+            <h3>{showDescription ? description : description.substring(0,0)+ '...'} <button onClick={()=> setShowDescription(!showDescription)}>{showDescription ? "show less" : 'Show description'} </button></h3>
+            <img src = {image} width ='300px' alt='picture'/>
+            <button onClick={()=> removeFilms(id)}> remove</button>
+          </div>
+
+        )
+      })}
+      <div>
+        <button onClick={() => setFilms([])}>Delete all</button>
+      </div>
+    </div>
+  )
 }
 
 export default App;
